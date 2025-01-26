@@ -1,117 +1,117 @@
-# Телеграм бот для предсказания цены на криптовалюту
+# Telegram bot for predicting cryptocurrency prices
 
-## Для чего этот бот
+## What is this bot for
 
-Бот предсказывает цены криптовалют (на ближайшие 3 недели), которые добавлены в избранные пользователя (по-умолчанию их максимум 3 позиции).
+The bot predicts cryptocurrency prices (for the next 3 weeks), which are added to the user's favorites (by default, there are a maximum of 3 positions).
 
-На выбранные криптовалюты можно узнать:
+For the selected cryptocurrencies, you can find out:
 
-- прогноз цен **на ближайшие 2 недели**;
-- уровни "_Low_" поддержки (с наглядной отрисовкой графика за последний год. Если есть данные);
-- уровни "_High_" поддержки (с наглядной отрисовкой графика за последний год. Если есть данные).
+- price forecast **for the next 2 weeks**;
+- "_Low_" support levels (with a visual graph for the last year. If there is data);
+- "_High_" support levels (with a visual graph for the last year. If there is data).
 
-> Уровни поддержки нужны для того, чтобы принять верное решение по покупке \ продаже.
+> Support levels are needed to make the right decision to buy \ sell.
 
-В боте реализована система добавления\удаления и хранение списка выбранных акций.
-А так же удобное навигационное меню - оно адаптивное и может "растягиваться" в зависимости от кол-ва акций в списке избранного (отображается в виде кнопок).
+The bot has a system for adding \ removing and storing a list of selected shares.
+And also a convenient navigation menu - it is adaptive and can "stretch" depending on the number of shares in the favorites list (displayed as buttons).
 
-Вот наглядный пример, что из себя представляет бот:
+Here is a visual example of what the bot is:
 
 ![TG_CryptoBot](_assets/TG-BOT.gif)
 
-## Используемые технологии
+## Technologies used
 
-- **investpy** = Для получения исторических данных цен по криптовалютам
-- **pandas** = Для работы с историческими данными
-- **beatifulsoup4** = Для парсинга предиктовых цен на криптовалюты
-- **python-telegram-bot** = Для работы с телеграм в качестве бота (рассылка сообщений, графиков)
-- **matplotlib** = Для отрисовки графиков цен на криптовалюты в годовом отрезке
-- **sqlite3** = Для хранения списка криптовалют и избранных криптовалют у пользователей
+- **investpy** = For obtaining historical data on cryptocurrency prices
+- **pandas** = For working with historical data
+- **beatifulsoup4** = For parsing predictive prices on cryptocurrencies
+- **python-telegram-bot** = For working with telegram as a bot (sending messages, charts)
+- **matplotlib** = For drawing charts of cryptocurrency prices in an annual period
+- **sqlite3** = For storing a list of cryptocurrencies and favorite cryptocurrencies for users
 
-## Подготовка к запуску
+## Preparing for launch
 
-Перед запуском, нужно подготовить специальный файл `.env` (переменные виртуального окружения).
+Before launching, you need to prepare a special file `.env` (virtual environment variables).
 
-В этом файле будет храниться две **обязательные** переменные (Токен и ID чата).
+This file will store two **mandatory** variables (Token and chat ID).
 
-Создайте файл `.env`, заполните переменные и поместите файл в директорию `config/`
+Create a `.env` file, fill in the variables and place the file in the `config/` directory
 
 ```
-TOKEN=<Токен вашего телеграм бота>
-CHAT_ID=<Чат, в который бот присылать графики (вы сами)>
+TOKEN=<Your telegram bot token>
+CHAT_ID=<Chat to which the bot will send graphs (you yourself)>
 ```
 
-## Запуск
+## Launch
 
-### Стандартный запуск
+### Standard launch
 
-Когда подготовительные работы завершены, можно приступать к запуску.
+When the preparatory work is completed, you can proceed to launch.
 
-Для начала, создайте виртуальное окружение:
+First, create a virtual environment:
 
 ```bash
 python -m venv venv
 ```
 
-И установите все необходимые зависимости проекта:
+And install all the necessary project dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Теперь можно запускать проект:
+Now you can launch the project:
 
 ```bash
 python main.py
 ```
 
-Осталось только перейти в телеграм и использовать бота по назначению.
+All that remains is to go to telegram and use the bot as intended.
 
-### Запуск с помощью Docker
+### Launch with Docker
 
-Проект так же настроен для запуска и в Docker
+The project is also configured to run in Docker
 
-> У вас должен быть установлен docker и docker-compose
-> Так же убедитесь, что сам докер запущен: `sudo systemctl status docker`
+> You must have docker and docker-compose installed
+> Also make sure that docker itself is running: `sudo systemctl status docker`
 
-Сборка и запуск в Docker командой:
+Build and run in Docker with the command:
 
 ```bash
 docker-compose up --build
 ```
 
-Если всё сделанно верно, то вас будет встречать:
+If everything is done correctly, you will be greeted by:
 
 ![Docker](_assets/Docker-done.png)
 
-Можете пользоваться ботом.
+You can use the bot.
 
-## Дополнительный функционал
+## Additional functionality
 
-В проекте реализован GitHub Actions (Workflow) ('.github/worflows/main.yml').
-Вы можете использовать его и в своём проекте при клонировании этого репозитория.
+The project implements GitHub Actions (Workflow) ('.github/worflows/main.yml').
+You can use it in your project when cloning this repository.
 
-Активируется при отправке изменений на GiHub репозиторий (git push)
+Activated when sending changes to GiHub repository (git push)
 
-GitHub Actions состоит из 3-х jobs:
+GitHub Actions consists of 3 jobs:
 
-- **formatting_and_test** = Проверка кода Линтером (flake8) и форматтером (black), и проведение Unittest тестирования.
-  (тесты в workflow на получения данных с investpy не проходят, т.к. GiHub блокирует сторонее соединение)
-- **build_and_push_to_docker_hub** = Сборка и публикация образа на DockerHub
-  (для этого нужно добавить DOCKER*USERNAME, DOCKER_PASSWORD и NAME_REPO в настройках GitHub в пункте \_secrets*)
-- **deploy** = загрузка образа на сервер и его активация
-  (этот job отключен, но вы можете ознакомиться самостоятельно ознакомиться с его настройками в файле '.github/worflows/main.yml')
+- **formatting_and_test** = Checking code with Linter (flake8) and formatter (black), and performing Unittest testing.
+(workflow tests for receiving data from investpy fail because GiHub blocks third-party connections)
+- **build_and_push_to_docker_hub** = Build and publish an image on DockerHub
+(to do this, add DOCKER*USERNAME, DOCKER_PASSWORD and NAME_REPO in the GitHub settings in the \_secrets* item)
+- **deploy** = upload the image to the server and activate it
+(this job is disabled, but you can familiarize yourself with its settings in the file '.github/worflows/main.yml')
 
-В проекте так же встроено логирование (библиотека Logging), которое сможет помочь вам, если что-то вдруг не получается в запуске проекта.
+The project also has built-in logging (Logging library), which can help you if something suddenly doesn't work out when launching the project.
 
-Сами логи хранятся в директории `config/logging/`.
+The logs themselves are stored in the `config/logging/` directory.
 
-По-умолчанию, собираются логи только _ERROR_ уровня, но вы можете самостоятельно изменить уровень логирования в файле `settings.py`
+By default, only _ERROR_ level logs are collected, but you can change the logging level yourself in the `settings.py` file
 
-## Как можно улучшить бота
+## How to improve the bot
 
-Пара слов о том, как можно улучшить бота:
+A few words about how to improve the bot:
 
-- Провести рефакторинг системы логирования и отлавливать только необходимые ошибки. Использование везде Exception является Bad Practice.
-- Переписать парсинг с применением асинхронного метода (библиотек asyncio и aiohttp). Позволит снизить ожидание результатов цен крипты.
-- Переписать отрисовку графиков. Например, вместо записи \ чтения png файла, сделать отправку картинки в бота через base64.
+- Refactor the logging system and catch only the necessary errors. Using Exception everywhere is Bad Practice.
+- Rewrite parsing using an asynchronous method (asyncio and aiohttp libraries). Will reduce the wait for crypto price results.
+- Rewrite the rendering of graphs. For example, instead of writing \ reading a png file, send an image to the bot via base64.
